@@ -1,0 +1,24 @@
+﻿<Window x:Class="PomoImmerse.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PomoImmerse"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Name="PomoTime" Content="30:00" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top">
+            <Button Name="StartBtn" Margin="5" Height="40" Width="100" Click="StartBtn_OnClick">
+                <TextBlock Name="StartText" Text="Start" FontSize="20"/>
+            </Button>
+            <Button Name="ResetBtn" Margin="5" Height="40" Width="100" Click="ResetBtn_OnClick">
+                <TextBlock Text="Reset" FontSize="20"/>            
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
