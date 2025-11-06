@@ -20,60 +20,72 @@ namespace PomoImmerse
         private bool _timerInit;
         private TimeSpan _countdown;
         private DateTime _startTime;
-        public DispatcherTimer Timer = new DispatcherTimer();
+        private readonly int _mainInterval = 1;
+        private readonly int _breakInterval = 5;
+        private int _nextInterval;
+        private DispatcherTimer _timer = new DispatcherTimer();
 
         public MainWindow()
         {
             InitializeComponent();
+            PomoTime.Content = $"{_mainInterval}:00";
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += OnTick;
         }
 
         private void PauseTimer()
         {
-            Timer.IsEnabled = false;
+            _timer.IsEnabled = false;
             _countdown = (_countdown - (DateTime.Now - _startTime));
             StartText.Text = "Resume";
         }
 
         private void ResumeTimer()
         {
-            Timer.IsEnabled = true;
+            _timer.IsEnabled = true;
             _startTime = DateTime.Now;
             StartText.Text = "Pause";
         }
 
         private void StartTimer(int length)
         {
-            Timer = new DispatcherTimer();
             _startTime = DateTime.Now;
             _countdown = TimeSpan.FromMinutes(length);
-            var nextInterval = 15;
-            if (length == 15) nextInterval = 30;
+            _nextInterval = (length == _breakInterval) ? _mainInterval : _breakInterval;
 
 
-                Timer.Interval = TimeSpan.FromSeconds(1);
-            Timer.Tick += (obj, args) =>
-            {
-                var currTime = (_countdown - (DateTime.Now - _startTime));
-                PomoTime.Content = currTime.ToString("mm\\:ss");
-                if (currTime <= TimeSpan.Zero) StartTimer(nextInterval);
-            };
+            if (!_timer.IsEnabled) _timer.Start();
             StartText.Text = "Pause";
-            Timer.IsEnabled = true;
             _timerInit = true;
+            PomoTime.Content = _countdown.ToString("mm\\:ss");
+        }
+        private void OnTick(object? sender, EventArgs e)
+        {
+            var currTime = _countdown - (DateTime.Now - _startTime);
+            if (currTime <= TimeSpan.Zero)
+            {
+                PomoTime.Content = "00:00";
+                StartTimer(_nextInterval);
+                return;
+            }
+
+            PomoTime.Content = currTime.ToString("mm\\:ss");
         }
         private void StartBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!_timerInit) StartTimer(30);
-            else if (Timer.IsEnabled) PauseTimer();
+            if (!_timerInit) StartTimer(_mainInterval);
+            else if (_timer.IsEnabled) PauseTimer();
             else ResumeTimer();
         }
 
         private void ResetBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            Timer.IsEnabled = false;
-            PomoTime.Content = "30:00";
+            _timer.IsEnabled = false;
+            StartText.Text = "Start";
+            _timerInit = false;
+            PomoTime.Content = $"{_mainInterval}:00";
             _startTime = DateTime.Now;
-            _countdown = TimeSpan.FromMinutes(30);
+            _countdown = TimeSpan.FromMinutes(_mainInterval);
         }
     }
 }

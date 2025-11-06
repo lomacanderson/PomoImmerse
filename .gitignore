@@ -1,0 +1,28 @@
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+TestResults/
+*.pdb
+*.cache
+*.log
+
+# User/IDE local files
+*.user
+*.suo
+*.userosscache
+*.userprefs
+PomolImmerse.csproj.user
+.vscode/
+.idea/
+_ReSharper*/
+*.DotSettings.user
+
+# Packages / artifacts
+*.nupkg
+*.snupkg
+
+# OS noise
+Thumbs.db
+Desktop.ini
+.DS_Store
