@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="PomoImmerse.ResetPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PomoImmerse"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White">
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Reset Timer" HorizontalAlignment="Center" FontSize="30" Margin="5"/>
+            <TextBlock Text="Would you like to reset the current segment or the full session?" Margin="5" HorizontalAlignment="Center" FontSize="15"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <Button Name="ResetSegmentBtn" Content="Reset Current Segment" HorizontalAlignment="Center" Margin="5" Padding="5" Click="ResetSegmentBtn_OnClick"/>
+                <Button Name="ResetSessionBtn" Content="Reset Session" HorizontalAlignment="Center" Margin="5" Padding="5" Click="ResetSessionBtn_OnClick"/>
+            </StackPanel>
+            <TextBlock Text="Resetting timer will lose all current progress" HorizontalAlignment="Center" FontSize="10" Foreground="Gray" Margin="5"/>
+        </StackPanel>
+        <Button Name="ExitBtn" Content="X" FontSize="20" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Gill Sans MT" Click="ExitBtn_OnClick"/>
+    </Grid>
+</UserControl>

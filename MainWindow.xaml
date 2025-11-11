@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PomoImmerse"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="10">
+        Title="PomoImmerse 1.0.1" Height="450" Width="800">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Name="PomoTime" Content="30:00" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <Rectangle Grid.RowSpan="2" Name="GreyOutBox" Fill="#80000000" Opacity="0.5" Visibility="Collapsed"/> 
+        <Label Name="PomoTime" Content="25:00" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top">
             <Button Name="StartBtn" Margin="5" Height="40" Width="100" Click="StartBtn_OnClick">
                 <TextBlock Name="StartText" Text="Start" FontSize="20"/>
@@ -19,6 +20,9 @@
             <Button Name="ResetBtn" Margin="5" Height="40" Width="100" Click="ResetBtn_OnClick">
                 <TextBlock Text="Reset" FontSize="20"/>            
             </Button>
+                <Popup Name="ResetPopup" IsOpen="False" StaysOpen="True" Placement="Center">
+                    <local:ResetPopup/>
+                </Popup>
         </StackPanel>
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,39 +20,44 @@ namespace PomoImmerse
     {
         private bool _timerInit;
         private TimeSpan _countdown;
-        private DateTime _startTime;
         private readonly int _mainInterval = 1;
         private readonly int _breakInterval = 5;
         private int _nextInterval;
-        private DispatcherTimer _timer = new DispatcherTimer();
+        private int _lastWholeSeconds = int.MaxValue;
+        private readonly DispatcherTimer _timer = new DispatcherTimer();
+        private readonly Stopwatch _sw = new Stopwatch();
+
 
         public MainWindow()
         {
             InitializeComponent();
             PomoTime.Content = $"{_mainInterval}:00";
-            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Interval = TimeSpan.FromMilliseconds(100);
             _timer.Tick += OnTick;
         }
 
         private void PauseTimer()
         {
+            _sw.Stop();
             _timer.IsEnabled = false;
-            _countdown = (_countdown - (DateTime.Now - _startTime));
+            _countdown -= _sw.Elapsed;
             StartText.Text = "Resume";
         }
 
         private void ResumeTimer()
         {
+            _sw.Restart();
             _timer.IsEnabled = true;
-            _startTime = DateTime.Now;
             StartText.Text = "Pause";
         }
 
         private void StartTimer(int length)
         {
-            _startTime = DateTime.Now;
             _countdown = TimeSpan.FromMinutes(length);
             _nextInterval = (length == _breakInterval) ? _mainInterval : _breakInterval;
+            _lastWholeSeconds = int.MaxValue;
+            _sw.Restart();
+
 
 
             if (!_timer.IsEnabled) _timer.Start();
@@ -61,7 +67,7 @@ namespace PomoImmerse
         }
         private void OnTick(object? sender, EventArgs e)
         {
-            var currTime = _countdown - (DateTime.Now - _startTime);
+            var currTime = _countdown - _sw.Elapsed;
             if (currTime <= TimeSpan.Zero)
             {
                 PomoTime.Content = "00:00";
@@ -69,7 +75,28 @@ namespace PomoImmerse
                 return;
             }
 
-            PomoTime.Content = currTime.ToString("mm\\:ss");
+            var whole = (int)Math.Ceiling(currTime.TotalSeconds);
+            if (whole != _lastWholeSeconds)
+            {
+                _lastWholeSeconds = whole;
+                // format from whole seconds to mm:ss
+                var mmss = TimeSpan.FromSeconds(whole).ToString("mm\\:ss");
+                PomoTime.Content = mmss;
+            }
+        }
+
+
+
+        public void ResetTimer(bool onlySegment = false)
+        {
+            var interval = _mainInterval;
+            if (onlySegment && _nextInterval == _mainInterval)
+                interval = _breakInterval;
+            else _nextInterval = _breakInterval;
+            _timer.IsEnabled = false;
+            StartText.Text = "Start";
+            PomoTime.Content = $"{interval}:00";
+            _countdown = TimeSpan.FromMinutes(interval);
         }
         private void StartBtn_OnClick(object sender, RoutedEventArgs e)
         {
@@ -80,12 +107,15 @@ namespace PomoImmerse
 
         private void ResetBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            _timer.IsEnabled = false;
-            StartText.Text = "Start";
-            _timerInit = false;
-            PomoTime.Content = $"{_mainInterval}:00";
-            _startTime = DateTime.Now;
-            _countdown = TimeSpan.FromMinutes(_mainInterval);
+            ResetPopup.IsOpen = true;
+            GreyOutBox.Visibility = Visibility.Visible;
+            PauseTimer();
+        }
+
+        public void CloseResetPopup()
+        {
+            ResetPopup.IsOpen = false;
+            GreyOutBox.Visibility = Visibility.Collapsed;
         }
     }
 }
