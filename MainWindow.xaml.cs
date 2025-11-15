@@ -120,6 +120,11 @@ namespace PomoImmerse
             ResetPopup.IsOpen = false;
             GreyOutBox.Visibility = Visibility.Collapsed;
         }
+        public void CloseInfoPopup()
+        {
+            InfoPopup.IsOpen = false;
+            GreyOutBox.Visibility = Visibility.Collapsed;
+        }
 
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
@@ -127,6 +132,12 @@ namespace PomoImmerse
             {
                 StartBtnPress();
             }
+        }
+
+        private void InfoBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            InfoPopup.IsOpen = true;
+            GreyOutBox.Visibility = Visibility.Visible;
         }
     }
 }

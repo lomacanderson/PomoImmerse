@@ -12,6 +12,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Button Name="InfoBtn" Click="InfoBtn_OnClick" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Background="Transparent" BorderBrush="#00707070">
+                <StackPanel>
+            <Image Source="Assets/Info.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Margin="5"/>
+                </StackPanel>
+        </Button>
         <Rectangle Grid.RowSpan="2" Name="GreyOutBox" Fill="#80000000" Opacity="0.5" Visibility="Collapsed"/> 
         <Label Name="PomoTime" Content="25:00" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top">
@@ -21,9 +26,12 @@
             <Button Name="ResetBtn" Margin="5" Height="40" Width="100" Click="ResetBtn_OnClick">
                 <TextBlock Text="Reset" FontSize="20"/>            
             </Button>
-                <Popup Name="ResetPopup" IsOpen="False" StaysOpen="True" Placement="Center">
-                    <local:ResetPopup/>
-                </Popup>
+            <Popup Name="ResetPopup" IsOpen="False" StaysOpen="True" Placement="Center">
+                <local:ResetPopup/>
+            </Popup>
+            <Popup Name="InfoPopup" IsOpen="False" StaysOpen="True" Placement="Center">
+                <local:InfoPopup/>
+            </Popup>
         </StackPanel>
     </Grid>
 </Window>

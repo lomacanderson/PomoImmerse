@@ -8,4 +8,22 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Assets\info.png" />
+    <None Remove="info.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\info.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="info.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="InfoPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>
