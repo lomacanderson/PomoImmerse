@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PomoImmerse"
         mc:Ignorable="d"
-        Title="PomoImmerse 1.0.1" Height="450" Width="800">
-    <Grid>
+        Title="PomoImmerse 1.0.2" Height="450" Width="800"
+        KeyDown="MainWindow_OnKeyDown">
+    <Grid Name="WindowGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>

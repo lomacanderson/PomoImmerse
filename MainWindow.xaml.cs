@@ -20,7 +20,7 @@ namespace PomoImmerse
     {
         private bool _timerInit;
         private TimeSpan _countdown;
-        private readonly int _mainInterval = 1;
+        private readonly int _mainInterval = 30;
         private readonly int _breakInterval = 5;
         private int _nextInterval;
         private int _lastWholeSeconds = int.MaxValue;
@@ -85,8 +85,6 @@ namespace PomoImmerse
             }
         }
 
-
-
         public void ResetTimer(bool onlySegment = false)
         {
             var interval = _mainInterval;
@@ -98,11 +96,16 @@ namespace PomoImmerse
             PomoTime.Content = $"{interval}:00";
             _countdown = TimeSpan.FromMinutes(interval);
         }
-        private void StartBtn_OnClick(object sender, RoutedEventArgs e)
+
+        private void StartBtnPress()
         {
             if (!_timerInit) StartTimer(_mainInterval);
             else if (_timer.IsEnabled) PauseTimer();
             else ResumeTimer();
+        }
+        private void StartBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            StartBtnPress();
         }
 
         private void ResetBtn_OnClick(object sender, RoutedEventArgs e)
@@ -116,6 +119,14 @@ namespace PomoImmerse
         {
             ResetPopup.IsOpen = false;
             GreyOutBox.Visibility = Visibility.Collapsed;
+        }
+
+        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                StartBtnPress();
+            }
         }
     }
 }
