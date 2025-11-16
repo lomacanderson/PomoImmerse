@@ -12,13 +12,20 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Name="InfoBtn" Click="InfoBtn_OnClick" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Background="Transparent" BorderBrush="#00707070">
+        <Button Name="InfoBtn" Click="InfoBtn_OnClick" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Background="Transparent" BorderBrush="#00707070" ToolTip="Info">
                 <StackPanel>
             <Image Source="Assets/Info.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Margin="5"/>
                 </StackPanel>
         </Button>
-        <Rectangle Grid.RowSpan="2" Name="GreyOutBox" Fill="#80000000" Opacity="0.5" Visibility="Collapsed"/> 
-        <Label Name="PomoTime" Content="25:00" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <Rectangle Grid.RowSpan="2" Name="GreyOutBox" Fill="#80000000" Opacity="0.5" Visibility="Collapsed"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal">
+            <Label Name="PomoTime" Content="25:00" FontSize="50" VerticalAlignment="Bottom" FontFamily="Arial Black"/>
+            <Button Name="SkipBtn" Click="SkipBtn_OnClick"  Margin="5" Background="Transparent" BorderBrush="#00707070" ToolTip="Skip Interval">
+                <StackPanel>
+                    <Image Source="Assets/skip.png" VerticalAlignment="Bottom" Width="45" Height="45" Margin="5"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top">
             <Button Name="StartBtn" Margin="5" Height="40" Width="100" Click="StartBtn_OnClick">
                 <TextBlock Name="StartText" Text="Start" FontSize="20"/>
@@ -31,6 +38,9 @@
             </Popup>
             <Popup Name="InfoPopup" IsOpen="False" StaysOpen="True" Placement="Center">
                 <local:InfoPopup/>
+            </Popup>
+            <Popup Name="SkipPopup" IsOpen="False" StaysOpen="True" Placement="Center">
+                <local:SkipPopup/>
             </Popup>
         </StackPanel>
     </Grid>

@@ -34,6 +34,7 @@ namespace PomoImmerse
             PomoTime.Content = $"{_mainInterval}:00";
             _timer.Interval = TimeSpan.FromMilliseconds(100);
             _timer.Tick += OnTick;
+            _nextInterval = _breakInterval;
         }
 
         private void PauseTimer()
@@ -97,6 +98,15 @@ namespace PomoImmerse
             _countdown = TimeSpan.FromMinutes(interval);
         }
 
+        public void SkipInterval()
+        {
+            _timer.IsEnabled = false;
+            StartText.Text = "Start";
+            PomoTime.Content = $"{_nextInterval}:00";
+            _countdown = TimeSpan.FromMinutes(_nextInterval);
+            _nextInterval = _nextInterval == _mainInterval ? _breakInterval : _mainInterval;
+        }
+
         private void StartBtnPress()
         {
             if (!_timerInit) StartTimer(_mainInterval);
@@ -125,6 +135,11 @@ namespace PomoImmerse
             InfoPopup.IsOpen = false;
             GreyOutBox.Visibility = Visibility.Collapsed;
         }
+        public void CloseSkipPopup()
+        {
+            SkipPopup.IsOpen = false;
+            GreyOutBox.Visibility = Visibility.Collapsed;
+        }
 
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
@@ -138,6 +153,13 @@ namespace PomoImmerse
         {
             InfoPopup.IsOpen = true;
             GreyOutBox.Visibility = Visibility.Visible;
+        }
+
+        private void SkipBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            SkipPopup.IsOpen = true;
+            GreyOutBox.Visibility = Visibility.Visible;
+            PauseTimer();
         }
     }
 }
