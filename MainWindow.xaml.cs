@@ -100,6 +100,7 @@ namespace PomoImmerse
 
         public void SkipInterval()
         {
+            _timerInit = true;
             _timer.IsEnabled = false;
             StartText.Text = "Start";
             PomoTime.Content = $"{_nextInterval}:00";
