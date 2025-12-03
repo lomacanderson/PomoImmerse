@@ -12,11 +12,18 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Name="InfoBtn" Click="InfoBtn_OnClick" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Background="Transparent" BorderBrush="#00707070" ToolTip="Info">
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Name="SettingsBtn" Click="SettingsBtn_OnClick" Margin="5" Background="Transparent" BorderBrush="#00707070" ToolTip="Settings">
                 <StackPanel>
-            <Image Source="Assets/Info.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Margin="5"/>
+                    <Image Source="Assets/settings.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Margin="5"/>
                 </StackPanel>
-        </Button>
+            </Button>
+            <Button Name="InfoBtn" Click="InfoBtn_OnClick" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Background="Transparent" BorderBrush="#00707070" ToolTip="Info">
+                <StackPanel>
+                    <Image Source="Assets/Info.png" Width="20" Height="20" Margin="5"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
         <Rectangle Grid.RowSpan="2" Name="GreyOutBox" Fill="#80000000" Opacity="0.5" Visibility="Collapsed"/>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal">
             <Label Name="PomoTime" Content="25:00" FontSize="50" VerticalAlignment="Bottom" FontFamily="Arial Black"/>
@@ -38,6 +45,9 @@
             </Popup>
             <Popup Name="InfoPopup" IsOpen="False" StaysOpen="True" Placement="Center">
                 <local:InfoPopup/>
+            </Popup>
+            <Popup Name="SettingsPopup" IsOpen="False" StaysOpen="True" Placement="Center">
+                <local:SettingsPopup/>
             </Popup>
             <Popup Name="SkipPopup" IsOpen="False" StaysOpen="True" Placement="Center">
                 <local:SkipPopup/>

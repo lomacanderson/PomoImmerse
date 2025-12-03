@@ -15,14 +15,33 @@ namespace PomoImmerse
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    /// </summary> 
     public partial class MainWindow : Window
     {
+        public static int MainInterval
+        {
+            get => _mainInterval;
+            set
+            {
+                if (_nextInterval == MainInterval) _nextInterval = value;
+                _mainInterval = value;
+            }
+        }
+
+        public static int BreakInterval
+        {
+            get => _breakInterval;
+            set
+            {
+                if (_nextInterval == BreakInterval) _nextInterval = value;
+                _breakInterval = value;
+            }
+        }
+        private static int _mainInterval = 25;
+        private static int _breakInterval = 5;
         private bool _timerInit;
         private TimeSpan _countdown;
-        private readonly int _mainInterval = 30;
-        private readonly int _breakInterval = 5;
-        private int _nextInterval;
+        private static int _nextInterval;
         private int _lastWholeSeconds = int.MaxValue;
         private readonly DispatcherTimer _timer = new DispatcherTimer();
         private readonly Stopwatch _sw = new Stopwatch();
@@ -31,10 +50,10 @@ namespace PomoImmerse
         public MainWindow()
         {
             InitializeComponent();
-            PomoTime.Content = $"{_mainInterval}:00";
+            PomoTime.Content = $"{MainInterval}:00";
             _timer.Interval = TimeSpan.FromMilliseconds(100);
             _timer.Tick += OnTick;
-            _nextInterval = _breakInterval;
+            _nextInterval = BreakInterval;
         }
 
         private void PauseTimer()
@@ -55,7 +74,7 @@ namespace PomoImmerse
         private void StartTimer(int length)
         {
             _countdown = TimeSpan.FromMinutes(length);
-            _nextInterval = (length == _breakInterval) ? _mainInterval : _breakInterval;
+            _nextInterval = (length == BreakInterval) ? MainInterval : BreakInterval;
             _lastWholeSeconds = int.MaxValue;
             _sw.Restart();
 
@@ -88,10 +107,10 @@ namespace PomoImmerse
 
         public void ResetTimer(bool onlySegment = false)
         {
-            var interval = _mainInterval;
-            if (onlySegment && _nextInterval == _mainInterval)
-                interval = _breakInterval;
-            else _nextInterval = _breakInterval;
+            var interval = MainInterval;
+            if (onlySegment && _nextInterval == MainInterval)
+                interval = BreakInterval;
+            else _nextInterval = BreakInterval;
             _timer.IsEnabled = false;
             StartText.Text = "Start";
             PomoTime.Content = $"{interval}:00";
@@ -105,12 +124,12 @@ namespace PomoImmerse
             StartText.Text = "Start";
             PomoTime.Content = $"{_nextInterval}:00";
             _countdown = TimeSpan.FromMinutes(_nextInterval);
-            _nextInterval = _nextInterval == _mainInterval ? _breakInterval : _mainInterval;
+            _nextInterval = _nextInterval == MainInterval ? BreakInterval : MainInterval;
         }
 
         private void StartBtnPress()
         {
-            if (!_timerInit) StartTimer(_mainInterval);
+            if (!_timerInit) StartTimer(MainInterval);
             else if (_timer.IsEnabled) PauseTimer();
             else ResumeTimer();
         }
@@ -142,6 +161,12 @@ namespace PomoImmerse
             GreyOutBox.Visibility = Visibility.Collapsed;
         }
 
+        public void CloseSettingsPopup()
+        {
+            SettingsPopup.IsOpen = false;
+            GreyOutBox.Visibility = Visibility.Collapsed;
+        }
+
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Space)
@@ -161,6 +186,12 @@ namespace PomoImmerse
             SkipPopup.IsOpen = true;
             GreyOutBox.Visibility = Visibility.Visible;
             PauseTimer();
+        }
+
+        private void SettingsBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsPopup.IsOpen = true;
+            GreyOutBox.Visibility = Visibility.Visible;
         }
     }
 }
