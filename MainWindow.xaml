@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PomoImmerse"
         mc:Ignorable="d"
-        Title="PomoImmerse 1.1.0" Height="450" Width="800"
+        Title="PomoImmerse 1.1.1" Height="450" Width="800"
         KeyDown="MainWindow_OnKeyDown">
+    <Window.Background>
+        <ImageBrush ImageSource="/Assets/background.jpg" Stretch="UniformToFill" />
+    </Window.Background>
     <Grid Name="WindowGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -26,10 +29,18 @@
         </StackPanel>
         <Rectangle Grid.RowSpan="2" Name="GreyOutBox" Fill="#80000000" Opacity="0.5" Visibility="Collapsed"/>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal">
-            <Label Name="PomoTime" Content="25:00" FontSize="50" VerticalAlignment="Bottom" FontFamily="Arial Black"/>
+            <Label Name="PomoTime" Content="25:00" FontSize="50" VerticalAlignment="Bottom" FontFamily="Arial Black">
+                <Label.Effect>
+                    <DropShadowEffect Color="White" BlurRadius="8" ShadowDepth="5"/>
+                </Label.Effect>
+            </Label>
             <Button Name="SkipBtn" Click="SkipBtn_OnClick"  Margin="5" Background="Transparent" BorderBrush="#00707070" ToolTip="Skip Interval">
                 <StackPanel>
-                    <Image Source="Assets/skip.png" VerticalAlignment="Bottom" Width="45" Height="45" Margin="5"/>
+                    <Image Source="Assets/skip.png" VerticalAlignment="Bottom" Width="45" Height="45" Margin="5">
+                        <Image.Effect>
+                            <DropShadowEffect Color="White" BlurRadius="8" ShadowDepth="5"/>
+                        </Image.Effect>
+                    </Image>
                 </StackPanel>
             </Button>
         </StackPanel>
