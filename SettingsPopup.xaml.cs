@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Net.Http;
+using System.Text.Json;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -61,10 +63,62 @@ namespace PomoImmerse
             }
         }
 
-        private void ImageQueryBox_OnLostFocus(object sender, RoutedEventArgs e)
+        private async void ImageQueryBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var query = ImageQueryBox.Text;
+            if (string.IsNullOrWhiteSpace(query))
+                return;
+
+            try
+            {
+                await GetImage(query);
+            }
+            catch (HttpRequestException ex)
+            {
+                System.Diagnostics.Debug.WriteLine("HTTP ERROR:");
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                MessageBox.Show("Could not contact image service. Check that it is running.",
+                                "Network error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("UNEXPECTED ERROR:");
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
         }
 
+        async Task GetImage(String query)
+        {
+            using var client = new HttpClient();
+
+            var url = "http://localhost:8000/images";
+
+            var response = await client.GetAsync($"{url}?query={query}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                using JsonDocument doc = JsonDocument.Parse(jsonString);
+
+                string imageLink = doc.RootElement
+                    .GetProperty("images")[0]
+                    .GetProperty("url")
+                    .GetString();
+
+                var main = (MainWindow)Application.Current.MainWindow;
+                main.Dispatcher.Invoke(() =>
+                {
+                    main.BackgroundLink = imageLink;
+                });
+
+                Console.WriteLine($"Received image");
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        
     }
 }

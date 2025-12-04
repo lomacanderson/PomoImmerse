@@ -23,8 +23,8 @@
                 <TextBox Name="MainIntervalBox" Grid.Row="0" Grid.Column="1" Margin="5" Width="100" LostFocus="MainIntervalBox_OnLostFocus"/>
                 <TextBlock Grid.Column="0" Grid.Row="1" Text="Break Interval:" Margin="5" FontSize="15"/>
                 <TextBox Name="BreakIntervalBox" Grid.Row="1" Grid.Column="1" Margin="5" Width="100" LostFocus="BreakIntervalBox_OnLostFocus"/>
-                <TextBlock Grid.Column="0" Grid.Row="2" Text="Background Image Query:" Margin="5" FontSize="15" Visibility="Collapsed"/>
-                <TextBox Name="ImageQueryBox" Grid.Row="1" Grid.Column="1" Margin="5" LostFocus="ImageQueryBox_OnLostFocus" Visibility="Collapsed"/>
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Background Image Query:" Margin="5" FontSize="15"/>
+                <TextBox Name="ImageQueryBox" Grid.Row="2" Grid.Column="1" Margin="5" LostFocus="ImageQueryBox_OnLostFocus"/>
             </Grid>
             <TextBlock Text="Image search requires image microservice" HorizontalAlignment="Center" FontSize="10" Foreground="Gray" Margin="5" Visibility="Collapsed"/>
         </StackPanel>

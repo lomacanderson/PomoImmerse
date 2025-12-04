@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,6 +39,25 @@ namespace PomoImmerse
                 _breakInterval = value;
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private string _backgroundLink = "Assets/background.jpg";
+        public string BackgroundLink
+        {
+            get => _backgroundLink;
+            set
+            {
+                if (_backgroundLink == value) return;
+                _backgroundLink = value;
+                OnPropertyChanged();
+                UpdateBackgroundImage();
+            }
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string name = null)
+    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
         private static int _mainInterval = 25;
         private static int _breakInterval = 5;
         private bool _timerInit;
@@ -50,6 +71,7 @@ namespace PomoImmerse
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
             PomoTime.Content = $"{MainInterval}:00";
             _timer.Interval = TimeSpan.FromMilliseconds(100);
             _timer.Tick += OnTick;
@@ -62,6 +84,29 @@ namespace PomoImmerse
             _timer.IsEnabled = false;
             _countdown -= _sw.Elapsed;
             StartText.Text = "Resume";
+        }
+
+        private void UpdateBackgroundImage()
+        {
+            try
+            {
+                var bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = new Uri(_backgroundLink, UriKind.RelativeOrAbsolute);
+                bmp.CacheOption = BitmapCacheOption.OnLoad;
+                bmp.CreateOptions = BitmapCreateOptions.None;
+                bmp.EndInit();
+
+                Background = new ImageBrush(bmp)
+                {
+                    Stretch = Stretch.UniformToFill
+                };
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to update background: " + ex);
+                // optional: keep old background or fall back to a default
+            }
         }
 
         private void ResumeTimer()
@@ -125,6 +170,11 @@ namespace PomoImmerse
             PomoTime.Content = $"{_nextInterval}:00";
             _countdown = TimeSpan.FromMinutes(_nextInterval);
             _nextInterval = _nextInterval == MainInterval ? BreakInterval : MainInterval;
+        }
+
+        public void ChangeBackground()
+        {
+
         }
 
         private void StartBtnPress()
